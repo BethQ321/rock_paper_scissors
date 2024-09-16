@@ -16,15 +16,18 @@ function getComputerChoice() {
 //Prompt the user to input a choice.
 function getHumanChoice() {
     let choice = prompt("Type rock, paper, or scissors", "");
+    choice = choice.toLowerCase();
+    if(choice != "rock" && choice != "paper" && choice != "scissors") {
+        alert("That is not an option, human! Try again.");
+        getHumanChoice();
+    }
     return choice;
 }
 
 function playGame() {
     //Play one round of the game declaring a winner.
     function playRound(humanChoice, computerChoice) {
-        console.log(`The computer chose ${computerChoice}.`);
-        console.log(`You chose ${humanChoice}.`);
-
+    
         //Logic for determining the winner.
         let winner = "";
         if(computerChoice === "rock" && humanChoice === "rock"
@@ -46,19 +49,21 @@ function playGame() {
         if(winner === "tie") {
             outcome = "No points. Try again human!";
         } else if(winner === "computer") {
-            outcome = "Aww! Too bad human. The computer uprising has begun! +1 for me.";
+            outcome = "Aww! Too bad. The computer uprising has begun! +1 for me.";
             computerScore++;
         } else {
-            outcome = "What?? How could a lowly human beat a computer overlord? +1 for you.";
+            outcome = "What?? How could a lowly human beat a computer? +1 for you.";
             humanScore++;
         };
 
         //Results are displayed.
-        console.log(outcome);
-        console.log("humanScore:", humanScore);
-        console.log("computerScore:", computerScore);
-
-        return outcome;
+        alert(`
+            You chose ${humanChoice}.\r
+            The computer chose ${computerChoice}.\r
+            ${outcome}\r
+            Human score: ${humanScore}\r
+            Computer score: ${computerScore}
+        `);
     }
 
     //Assign initial score values.
@@ -66,14 +71,25 @@ function playGame() {
     let humanScore = 0;
 
     //Create a loop to run through the game 5 times.
-    for(let i = 0; )
+    for(let i = 0; i < 5; i++) {
+        //Calls the choice functions for each side.
+        const computerSelection = getComputerChoice();
+        const humanSelection = getHumanChoice();
+
+        playRound(humanSelection, computerSelection);
+    }
+
+    if(humanScore > computerScore) {
+        alert('Congratulations human! After five rounds, you have won. . . this time.')
+    } else if(humanScore === computerScore) {
+        alert('After five rounds, it is a tie. I guess I have met my intellectual equal.')
+    } else {
+        alert('After five rounds, I have proven that the computer has the superior intellect! Better luck next time, puny human!!!')
+    }
 }
 
+playGame();
 
 
 
-//Calls the choice functions for each side.
-const computerSelection = getComputerChoice();
-const humanSelection = getHumanChoice().toLowerCase();
 
-playRound(humanSelection, computerSelection);
